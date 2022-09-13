@@ -132,8 +132,8 @@
         Ctrl(Char('q')): ["quit"], // Quit current document
         Ctrl(Char('s')): ["save"], // Save current document
         Alt(Char('s')):  ["save ?"], // Save current document as
-        Ctrl(Char('w')): ["save *"], // Save all open documents
-        Ctrl(Char('n')): ["new"], // Create new document
+        Alt(Char('w')): ["save *"], // Save all open documents
+        Alt(Char('n')): ["new"], // Create new document
         Ctrl(Char('o')): ["open"], // Open document
         Ctrl(Left):      ["prev"], // Move to previous tab
         Ctrl(Right):     ["next"], // Move to next tab

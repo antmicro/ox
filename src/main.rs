@@ -36,6 +36,10 @@ use document::Document;
 use editor::{Direction, Editor, Position};
 use oxa::Variable;
 use row::Row;
+#[cfg(target_os = "wasi")]
+use serde_json::json;
+#[cfg(target_os = "wasi")]
+use std::fs;
 use std::fs::OpenOptions;
 use std::io::Write;
 use std::{env, panic};
@@ -105,6 +109,23 @@ file.txt:100 (This will go to line 100 in file.txt)"#,
                 .default_value(&config_dir)
                 .help("The directory of the config file"),
         );
+
+    #[cfg(target_os = "wasi")] {
+        let command = json!({
+            "command": "get_cwd",
+        });
+        match fs::read_link(format!("/!{}", command)) {
+            Ok(cwd) => {
+                env::set_current_dir(cwd).unwrap_or_else(|e| {
+                    eprintln!("Could not set current working dir: {}", e);
+                });
+            },
+            Err(e) => {
+                eprintln!("Could not obtain current working dir path: {}", e);
+            },
+        }
+    }
+
     // Fire up the editor, ensuring that no start up problems occured
     if let Ok(mut editor) = Editor::new(cli) {
         editor.run();

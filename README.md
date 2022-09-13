@@ -176,8 +176,8 @@ Ox is controlled via your keyboard shortcuts. Here are the default shortcuts tha
 | `Ctrl + Q`  | Exits the current tab or the editor if only one tab open.  | 
 | `Ctrl + S`  | Saves the open file to the disk.  | 
 | `Alt + S`   | Prompts you for a file name and saves it to disk as that file name.  | 
-| `Ctrl + W`  | Saves all the currently open files to the disk. | 
-| `Ctrl + N`  | Creates a new tab with a blank document.  | 
+| `Alt + W`  | Saves all the currently open files to the disk. |
+| `Alt + N`  | Creates a new tab with a blank document.  |
 | `Ctrl + O`  | Prompts you for a file and opens that file in a new tab.  | 
 | `Ctrl + F`  | Searches the document for a search query. Allows pressing of <kbd>↑</kbd> and <kbd>←</kbd> to move the cursor to the previous occurance fof the query and <kbd>↓</kbd> and <kbd>→</kbd> to move to the next occurance of the query. Press <kbd>Return</kbd> to cancel the search at the current cursor position or <kbd>Esc</kbd> to cancel the search and return to the initial location of the cursor. Note: this allows you to use regular expressions. | 
 | `Ctrl + Z`  | Undoes your last action. The changes are committed to the undo stack every time you press the space bar, create / destroy a new line and when there is no activity after a certain period of time which can be used to capture points where you pause for thought or grab a coffee etc... | 
