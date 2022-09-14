@@ -417,7 +417,7 @@ impl Editor {
                 self.update();
             }
             InputEvent::Mouse(_) => (),
-            _ => todo!(),
+            _ => unimplemented!(),
         }
     }
     fn new_document(&mut self) {
