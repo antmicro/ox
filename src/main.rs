@@ -113,12 +113,21 @@ file.txt:100 (This will go to line 100 in file.txt)"#,
     #[cfg(target_os = "wasi")] {
         let command = json!({
             "command": "get_cwd",
+            "buf_len": 2,
+            "buf_ptr": format!("{:?}", "{}".as_ptr()),
         });
         match fs::read_link(format!("/!{}", command)) {
-            Ok(cwd) => {
-                env::set_current_dir(cwd).unwrap_or_else(|e| {
-                    eprintln!("Could not set current working dir: {}", e);
-                });
+            Ok(data) => {
+                let result = data.to_str()
+                                .unwrap()
+                                .trim_matches(char::from(0))
+                                .to_string();
+                let (err, cwd) = result.split_once("\x1b").unwrap();
+                if err == "0" {
+                    std::env::set_current_dir(cwd).unwrap_or_else(|e| {
+                        eprintln!("Could not set current working dir: {}", e);
+                    });
+                }
             },
             Err(e) => {
                 eprintln!("Could not obtain current working dir path: {}", e);
