@@ -156,6 +156,7 @@ dependencies = [
  "signal-hook",
  "signal-hook-mio",
  "sscanf",
+ "wasi 0.11.0+wasi-snapshot-preview1",
  "winapi",
 ]
 

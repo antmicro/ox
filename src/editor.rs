@@ -17,10 +17,7 @@ use std::fs::OpenOptions;
 use std::io::{BufRead, BufReader, Error, ErrorKind as Iek, Write};
 use std::path::Path;
 use std::process::{Command, Stdio};
-#[cfg(not(target_os = "wasi"))]
 use std::time::{Duration, Instant};
-#[cfg(target_os = "wasi")]
-use std::time::Instant;
 use unicode_width::UnicodeWidthStr;
 
 // Set up color resets
@@ -242,9 +239,14 @@ impl Editor {
     }
     fn read_event(&mut self) -> InputEvent {
         // Wait until a key, mouse or terminal resize event
-        #[cfg(not(target_os = "wasi"))]
         loop {
-            if let Ok(true) = crossterm::event::poll(Duration::from_millis(16)) {
+            #[cfg(not(target_os = "wasi"))]
+            let timeout = Duration::from_millis(16);
+            #[cfg(target_os = "wasi")]
+            // performance issues
+            let timeout = Duration::from_millis(500);
+
+            if let Ok(true) = crossterm::event::poll(timeout) {
                 if let Ok(key) = crossterm::event::read() {
                     // When a keypress was detected
                     self.last_keypress = Some(Instant::now());
@@ -262,26 +264,6 @@ impl Editor {
                 }
             }
         }
-
-        #[cfg(target_os = "wasi")]
-        loop {
-            if let Ok(key) = crossterm::event::read() {
-                // When a keypress was detected
-                self.last_keypress = Some(Instant::now());
-
-                // Check for a period of inactivity
-                if let Some(time) = self.last_keypress {
-                    // Check to see if it's over the config undo period
-                    if time.elapsed().as_secs() >= self.config.general.undo_period {
-                        // Commit the undo changes to the stack
-                        self.doc[self.tab].undo_stack.commit();
-                        self.last_keypress = None;
-                    }
-                }
-                return key;
-            }
-        }
-
     }
     fn key_event_to_ox_key(key: KeyCode, modifiers: KeyModifiers) -> KeyBinding {
         // Convert crossterm's complicated key structure into Ox's simpler one
