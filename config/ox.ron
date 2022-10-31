@@ -150,7 +150,11 @@
         F(1):   [
             "sh echo You can get help here:",
             "shc echo https://github.com/curlpipe/ox/wiki",
-        ]
+        ],
+        // Testing key shortcuts
+        Ctrl(Char('p')):  ["save ?"], // Save current document as
+        Ctrl(Char('w')): ["save *"], // Save all open documents
+        Ctrl(Char('n')): ["new"], // Create new document
     },
     // Language specific settings
     languages: [
