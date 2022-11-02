@@ -103,7 +103,15 @@ fn main() {
     }
     
     // Attempt to start an editor instance
-    let config_dir = load_config().unwrap_or_else(|| " ~/.config/ox/ox.ron".to_string());
+    #[cfg(not(target_os = "wasi"))]
+    let config_dir = load_config().unwrap_or_else(|| "~/.config/ox/ox.ron".to_string());
+    
+    // Shellexpand crate uses dirs crate that do not implementrs features for wasm target:
+    // https://github.com/dirs-dev/dirs-rs/blob/main/src/wasm.rs#L5
+    //
+    // For that reason shellexpand cannot resolve '~' symbol.
+    #[cfg(target_os = "wasi")]
+    let config_dir = load_config().unwrap_or_else(|| "$HOME/.config/ox/ox.ron".to_string());
     
     // Gather the command line arguments
     let cli = App::new("Ox")
