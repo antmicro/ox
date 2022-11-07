@@ -36,10 +36,6 @@ use document::Document;
 use editor::{Direction, Editor, Position};
 use oxa::Variable;
 use row::Row;
-#[cfg(target_os = "wasi")]
-use serde_json::json;
-#[cfg(target_os = "wasi")]
-use std::fs;
 use std::fs::OpenOptions;
 use std::io::Write;
 use std::{env, panic};
@@ -76,36 +72,16 @@ fn main() {
         // Print panic info
         eprintln!("{}", e);
     }));
-
-    #[cfg(target_os = "wasi")] {
-        let command = json!({
-            "command": "get_cwd",
-            "buf_len": 2,
-            "buf_ptr": format!("{:?}", "{}".as_ptr()),
-        });
-        match fs::read_link(format!("/!{}", command)) {
-            Ok(data) => {
-                let result = data.to_str()
-                                .unwrap()
-                                .trim_matches(char::from(0))
-                                .to_string();
-                let (err, cwd) = result.split_once("\x1b").unwrap();
-                if err == "0" {
-                    std::env::set_current_dir(cwd).unwrap_or_else(|e| {
-                        eprintln!("Could not set current working dir: {}", e);
-                    });
-                }
-            },
-            Err(e) => {
-                eprintln!("Could not obtain current working dir path: {}", e);
-            },
-        }
-    }
     
-    // Attempt to start an editor instance
+    #[cfg(target_os = "wasi")]
+    let _ = wasi_ext_lib::chdir(
+        &match wasi_ext_lib::getcwd() {
+            Ok(p) => p,
+            Err(_) => String::from("/")
+    });
     #[cfg(not(target_os = "wasi"))]
     let config_dir = load_config().unwrap_or_else(|| "~/.config/ox/ox.ron".to_string());
-    
+
     // Shellexpand crate uses dirs crate that do not implementrs features for wasm target:
     // https://github.com/dirs-dev/dirs-rs/blob/main/src/wasm.rs#L5
     //
