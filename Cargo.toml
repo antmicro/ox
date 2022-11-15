@@ -34,7 +34,6 @@ path = "vendor/crossterm"
 [target.'cfg(target_os = "wasi")'.dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-sscanf = "0.3.1"
 
 [package.metadata.rpm]
 package = "ox"
