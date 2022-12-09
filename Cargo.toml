@@ -29,7 +29,8 @@ directories = "3.0.1"
 term = "0.6.1"
 
 [dependencies.crossterm]
-path = "vendor/crossterm"
+git = "https://github.com/antmicro/crossterm.git"
+branch = "jswasi"
 
 [target.'cfg(target_os = "wasi")'.dependencies]
 wasi_ext_lib = { git = "https://github.com/antmicro/wasi_ext_lib.git", branch = "main" }

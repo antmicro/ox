@@ -1,4 +1,0 @@
-[submodule "vendor/crossterm"]
-	path = vendor/crossterm
-	url = ../crossterm
-	branch = wasi-target

@@ -141,6 +141,7 @@ dependencies = [
 [[package]]
 name = "crossterm"
 version = "0.24.0"
+source = "git+https://github.com/antmicro/crossterm.git?branch=jswasi#4f8450a7fd478da45308ec89883308071dd51f0d"
 dependencies = [
  "bitflags",
  "crossterm_winapi",
