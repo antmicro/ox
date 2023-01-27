@@ -152,7 +152,7 @@ dependencies = [
  "signal-hook-mio",
  "sscanf",
  "wasi",
- "wasi_ext_lib",
+ "wasi_ext_lib 0.1.0 (git+https://github.com/antmicro/wasi_ext_lib.git?branch=main)",
  "winapi",
 ]
 
@@ -337,7 +337,7 @@ dependencies = [
  "term",
  "unicode-segmentation",
  "unicode-width",
- "wasi_ext_lib",
+ "wasi_ext_lib 0.1.0 (git+https://github.com/antmicro/wasi_ext_lib.git?branch=main)",
 ]
 
 [[package]]
@@ -637,7 +637,16 @@ checksum = "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423"
 [[package]]
 name = "wasi_ext_lib"
 version = "0.1.0"
-source = "git+https://github.com/antmicro/wasi_ext_lib.git?branch=main#30c22b298c048662a69c27edd49ac652504c8c8d"
+source = "git+https://github.com/antmicro/wasi_ext_lib.git?branch=main#7d0253cf27ece92df0047b00525e259192c5d79e"
+dependencies = [
+ "bindgen",
+ "wasi",
+]
+
+[[package]]
+name = "wasi_ext_lib"
+version = "0.1.0"
+source = "git+https://github.com/antmicro/wasi_ext_lib.git?branch=main#7d0253cf27ece92df0047b00525e259192c5d79e"
 dependencies = [
  "bindgen",
  "wasi",
